@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Blogs = () => {
   return (
-    <div>
+    <main>
       <h3 className="">Blogs</h3>
       <ul>
         <li>
@@ -18,7 +18,7 @@ const Blogs = () => {
           <Link href="/blogs/4"> Blog 4</Link>
         </li>
       </ul>
-    </div>
+    </main>
   );
 };
 

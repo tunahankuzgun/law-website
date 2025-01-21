@@ -1,41 +1,28 @@
-"use client";
-
 import Link from "next/link";
-import { useState } from "react";
-
 const Navbar = () => {
-  const [menuVisibility, setMenuVisibility] = useState(false);
-
   return (
-    <div>
-      <h2
-        onClick={() => {
-          setMenuVisibility((prev) => !prev);
-        }}
-        className="bg-gray-800 text-white w-full p-4 cursor-pointer"
-      >
-        Menu
+    <header className="flex justify-between bg-gray-800 text-white h-[60px] items-center">
+      <h2 className="mx-10">
+        <Link href="/">Logo</Link>
       </h2>
-      {menuVisibility && (
-        <div className="bg-gray-200 text-black w-full ">
-          <ul>
-            <li>
-              <Link href="/">Home</Link>
-            </li>
-            <li>
-              <Link href="/about">About</Link>
-            </li>
-            <li>
-              <Link href="/dashboard">Dashboard</Link>
-            </li>
-            <li>
-              <Link href="/blogs">Blogs</Link>
-            </li>
-            <li>Settings</li>
-          </ul>
-        </div>
-      )}
-    </div>
+      <div className="mx-10">
+        <ul className="flex justify-between gap-5">
+          <li>
+            <Link href="/">Home</Link>
+          </li>
+          <li>
+            <Link href="/about">About</Link>
+          </li>
+          <li>
+            <Link href="/dashboard">Dashboard</Link>
+          </li>
+          <li>
+            <Link href="/blogs">Blogs</Link>
+          </li>
+          <li>Settings</li>
+        </ul>
+      </div>
+    </header>
   );
 };
 

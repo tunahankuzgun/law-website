@@ -16,5 +16,5 @@ export async function createBlog(formData: FormData) {
     },
   });
 
-  revalidatePath(`/blogs/${slug}`);
+  revalidatePath(`/blogs`);
 }

@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ModeToggle } from "./ModeToggle";
+
 const Navbar = () => {
   return (
     <header className="flex justify-between bg-gray-800 text-white h-[60px] items-center">
@@ -7,6 +9,9 @@ const Navbar = () => {
       </h2>
       <div className="mx-10">
         <ul className="flex justify-between gap-5">
+          <li>
+            <ModeToggle />
+          </li>
           <li>
             <Link href="/">Home</Link>
           </li>

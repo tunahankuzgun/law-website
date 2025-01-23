@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { createBlog } from "@/actions/create-blog";
+import { createBlog } from "@/actions/actions";
 
 const CreateForm = () => {
   const formSchema = z.object({
@@ -37,7 +37,7 @@ const CreateForm = () => {
       <form
         action={createBlog}
         onSubmit={() => form.reset()}
-        className=" w-[400px] space-y-8"
+        className="text-white w-[400px] space-y-8"
       >
         <FormField
           control={form.control}

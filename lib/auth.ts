@@ -30,18 +30,16 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
           return null;
         }
         if (!user.password) {
-          console.log("User password is null");
-          return null;
+          throw new Error("User password is null");
         }
         const isMatch = await bcrypt.compare(
           validatedCredentials.password,
           user.password
         );
         if (!isMatch) {
-          console.log("Password does not match");
-          return null;
+          throw new Error("Password does not match");
         }
-        return { email: user.email };
+        return user;
       },
     }),
   ],

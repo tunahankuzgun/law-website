@@ -1,14 +1,20 @@
-"use client";
-
-import { createUser } from "@/actions/actions";
+import { signUp } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
 const CreateUser = () => {
   return (
-    <form action={createUser}>
+    <form
+      action={async (formData) => {
+        "use server";
+        const res = await signUp(formData);
+        if (res.success) {
+          redirect("/admin");
+        }
+      }}
+    >
       <input
-        hidden
-        defaultValue={"tkuzgun@gmail.com"}
+        defaultValue={"tk@gmail.com"}
         type="email"
         name="email"
         id="create-email"
@@ -16,8 +22,7 @@ const CreateUser = () => {
         required
       />
       <input
-        hidden
-        defaultValue={"tkuzgun123"}
+        defaultValue={"1234"}
         type="password"
         name="password"
         id="create-password"

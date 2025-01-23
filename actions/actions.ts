@@ -6,6 +6,7 @@ import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
 import { schema } from "@/lib/scheme";
+import { executeAction } from "@/lib/executeAction";
 
 export async function createBlog(formData: FormData) {
   try {
@@ -28,16 +29,20 @@ export async function createBlog(formData: FormData) {
   revalidatePath("/blogs");
 }
 
-export async function createUser(formData: FormData) {
-  const email = formData.get("email");
-  const password = formData.get("password");
-  const validatedData = schema.parse({ email, password });
-
-  await prisma.user.create({
-    data: {
-      email: validatedData.email,
-      password: await bcrypt.hash(validatedData.password, 13),
+export async function signUp(formData: FormData) {
+  return executeAction({
+    actionFn: async () => {
+      const email = formData.get("email");
+      const password = formData.get("password");
+      const validatedData = schema.parse({ email, password });
+      await prisma.user.create({
+        data: {
+          email: validatedData.email.toLocaleLowerCase(),
+          password: await bcrypt.hash(validatedData.password, 13),
+        },
+      });
     },
+    successMessage: "Signed up successfully",
   });
 }
 

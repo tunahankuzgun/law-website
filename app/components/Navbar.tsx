@@ -1,7 +1,31 @@
+"use client";
+
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
+  const navLinks = [
+    {
+      name: "Home",
+      path: "/",
+    },
+    {
+      name: "About",
+      path: "/about",
+    },
+    {
+      name: "Dashboard",
+      path: "/dashboard",
+    },
+    {
+      name: "Blogs",
+      path: "/blogs",
+    },
+  ];
+
+  const pathname = usePathname();
+
   return (
     <header className="flex justify-between bg-gray-800 text-white h-[60px] items-center">
       <h2 className="mx-10">
@@ -12,19 +36,20 @@ const Navbar = () => {
           <li>
             <ModeToggle />
           </li>
-          <li>
-            <Link href="/">Home</Link>
-          </li>
-          <li>
-            <Link href="/about">About</Link>
-          </li>
-          <li>
-            <Link href="/dashboard">Dashboard</Link>
-          </li>
-          <li>
-            <Link href="/blogs">Blogs</Link>
-          </li>
-          <li>Settings</li>
+          {navLinks.map((link) => (
+            <li key={link.name}>
+              <Link
+                className={
+                  link.path === pathname
+                    ? `bg-white rounded-full p-2 text-black`
+                    : ""
+                }
+                href={link.path}
+              >
+                {link.name}
+              </Link>
+            </li>
+          ))}
         </ul>
       </div>
     </header>

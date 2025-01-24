@@ -1,3 +1,4 @@
+"use client";
 import { ThemeProvider } from "next-themes";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
@@ -11,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className="bg-gray-900">
+      <body className="bg-background">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

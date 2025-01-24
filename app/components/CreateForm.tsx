@@ -37,7 +37,7 @@ const CreateForm = () => {
       <form
         action={createBlog}
         onSubmit={() => form.reset()}
-        className="text-white w-[400px] space-y-8"
+        className="w-[400px] space-y-8"
       >
         <FormField
           control={form.control}
@@ -46,11 +46,9 @@ const CreateForm = () => {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter your title" {...field} />
               </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
+              <FormDescription>This is title of your blog.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
@@ -62,14 +60,14 @@ const CreateForm = () => {
             <FormItem>
               <FormLabel>Content</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="Enter Your content" {...field} />
               </FormControl>
-              <FormDescription>This is Content.</FormDescription>
+              <FormDescription>This is content.</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Create Blog</Button>
       </form>
     </Form>
   );

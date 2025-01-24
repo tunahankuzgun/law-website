@@ -1,3 +1,4 @@
+import { ThemeProvider } from "next-themes";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
@@ -9,13 +10,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html suppressHydrationWarning lang="en">
       <body className="bg-gray-900">
-        <Container>
-          <Navbar />
-          {children}
-          <Footer />
-        </Container>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Container>
+            <Navbar />
+            {children}
+            <Footer />
+          </Container>
+        </ThemeProvider>
       </body>
     </html>
   );

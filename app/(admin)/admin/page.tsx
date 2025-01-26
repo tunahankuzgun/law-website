@@ -3,7 +3,6 @@ import { ModeToggle } from "@/app/components/ModeToggle";
 import SignOut from "@/app/components/SignOut";
 import { LoginForm } from "@/components/ui/login-form";
 import { auth } from "@/lib/auth";
-import React from "react";
 
 const Admin = async () => {
   const session = await auth();
@@ -18,7 +17,7 @@ const Admin = async () => {
       <div className="flex flex-col items-center justify-center h-screen bg-background">
         <ModeToggle />
         {session && <CreateUser />}
-        <h1 className="text-white mb-10 text-4xl">
+        <h1 className="mb-10 text-4xl">
           Hello {session ? session?.user?.email?.split("@")[0] : "Guest"}
         </h1>
         {!session && <LoginForm />}

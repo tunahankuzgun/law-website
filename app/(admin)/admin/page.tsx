@@ -17,7 +17,7 @@ const Admin = async () => {
       {session && <SignOut />}
       <div className="flex flex-col items-center justify-center h-screen bg-background">
         <ModeToggle />
-        {!session && <CreateUser />}
+        {session && <CreateUser />}
         <h1 className="text-white mb-10 text-4xl">
           Hello {session ? session?.user?.email?.split("@")[0] : "Guest"}
         </h1>

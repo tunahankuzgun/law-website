@@ -37,7 +37,7 @@ const CreateForm = () => {
       <form
         action={createBlog}
         onSubmit={() => form.reset()}
-        className="w-[400px] space-y-8"
+        className="w-[300px]"
       >
         <FormField
           control={form.control}

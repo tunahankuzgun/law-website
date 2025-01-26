@@ -18,7 +18,9 @@ export default async function Blog({
 
   return (
     <main>
-      <h2 className="text-4xl">Blog: {blog?.title}</h2>
+      <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        Blog: {blog?.title}
+      </h1>
 
       <p>{blog?.content}</p>
     </main>

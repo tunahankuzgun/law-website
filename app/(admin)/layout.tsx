@@ -1,5 +1,4 @@
 import { ThemeProvider } from "next-themes";
-import Container from "../components/Container";
 import "../globals.css";
 
 export default function AdminLayout({
@@ -16,7 +15,7 @@ export default function AdminLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Container>{children}</Container>
+          {children}
         </ThemeProvider>
       </body>
     </html>

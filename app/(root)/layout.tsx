@@ -1,6 +1,5 @@
 "use client";
 import { ThemeProvider } from "next-themes";
-import Container from "../components/Container";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "../globals.css";
@@ -12,18 +11,21 @@ export default function RootLayout({
 }>) {
   return (
     <html suppressHydrationWarning lang="en">
-      <body className="bg-background">
+      <body>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          <Container>
-            <Navbar />
-            {children}
-            <Footer />
-          </Container>
+          <div className="container min-h-screen">
+            <div className="wrapper">
+              <Navbar />
+              {children}
+
+              <Footer />
+            </div>
+          </div>
         </ThemeProvider>
       </body>
     </html>

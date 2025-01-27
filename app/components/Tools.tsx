@@ -76,16 +76,13 @@ const Tools = () => {
   ];
 
   return (
-    <>
+    <div className="flex gap-5">
       {tools.map((tool) => (
-        <button
-          key={tool.task}
-          className="items-center justify-center w-10 h-10 rounded-md"
-        >
+        <button key={tool.task} className="rounded-md">
           {tool.icon}
         </button>
       ))}
-    </>
+    </div>
   );
 };
 

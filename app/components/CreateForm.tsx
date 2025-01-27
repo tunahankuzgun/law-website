@@ -12,18 +12,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createBlog } from "@/actions/actions";
+import { formSchema } from "@/lib/scheme";
 
 const CreateForm = () => {
-  const formSchema = z.object({
-    title: z.string().min(2, {
-      message: "Title must be at least 2 characters.",
-    }),
-    content: z.string(),
-  });
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -31,14 +25,20 @@ const CreateForm = () => {
       content: "",
     },
   });
+  const onSubmitForm: SubmitHandler<z.infer<typeof formSchema>> = async (
+    data: z.infer<typeof formSchema>
+  ) => {
+    if (await createBlog(data)) {
+      console.log("Blog created successfully");
+      form.reset();
+    } else {
+      console.error("Failed to create blog");
+    }
+  };
 
   return (
     <Form {...form}>
-      <form
-        action={createBlog}
-        onSubmit={() => form.reset()}
-        className="w-[300px]"
-      >
+      <form onSubmit={form.handleSubmit(onSubmitForm)} className="w-[300px]">
         <FormField
           control={form.control}
           name="title"

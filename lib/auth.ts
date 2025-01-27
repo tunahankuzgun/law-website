@@ -11,6 +11,7 @@ const adapter = PrismaAdapter(prisma);
 
 export const { auth, handlers, signIn, signOut } = NextAuth({
   adapter,
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {

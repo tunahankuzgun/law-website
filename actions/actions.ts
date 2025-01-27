@@ -5,28 +5,29 @@ import prisma from "@/lib/db";
 import { Prisma } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcryptjs";
-import { schema } from "@/lib/scheme";
+import { formSchema, schema } from "@/lib/scheme";
 import { executeAction } from "@/lib/executeAction";
+import { z } from "zod";
 
-export async function createBlog(formData: FormData) {
+export async function createBlog(formData: z.infer<typeof formSchema>) {
   try {
-    await prisma.blog.create({
+    const blog = await prisma.blog.create({
       data: {
-        title: formData.get("title") as string,
-        slug: (formData.get("title") as string)
-          .replace(/\s/g, "-")
-          .toLowerCase(),
-        content: formData.get("content") as string,
+        title: formData.title as string,
+        slug: (formData.title as string).replace(/\s/g, "-").toLowerCase(),
+        content: formData.content as string,
       },
     });
+    revalidatePath("/blogs");
+    return blog;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === "P2002") {
         console.error("Blog already exists");
       }
     }
+    return null;
   }
-  revalidatePath("/blogs");
 }
 
 export async function signUp(formData: FormData) {

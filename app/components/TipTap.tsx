@@ -1,7 +1,7 @@
 "use client";
 
 import { useEditor, EditorContent } from "@tiptap/react";
-import CharacterCount from '@tiptap/extension-character-count';
+import CharacterCount from "@tiptap/extension-character-count";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
@@ -9,15 +9,16 @@ import Placeholder from "@tiptap/extension-placeholder";
 import BulletList from "@tiptap/extension-bullet-list";
 
 import Tools from "./Tools";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Tiptap = () => {
   const extensions = [
     StarterKit,
     Underline,
     TextAlign.configure({ types: ["heading", "paragraph"] }),
-    Placeholder.configure({ placeholder: 'Type something...' }),
+    Placeholder.configure({ placeholder: "Type something..." }),
     CharacterCount,
-    BulletList
+    BulletList,
   ];
 
   const editor = useEditor({
@@ -25,7 +26,7 @@ const Tiptap = () => {
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm lg:prose-lg 2xl:prose-2xl m-10  focus:outline-none",
+          "prose prose-sm lg:prose-lg 2xl:prose-2xl m-10 w-full focus:outline-none",
       },
     },
     immediatelyRender: false,
@@ -33,12 +34,16 @@ const Tiptap = () => {
   });
 
   return (
-    <div className="h-screen flex flex-col space-y-6">
-      <div className="sticky top-0 z-10 p-2">
+    <div className="h-screen w-full flex flex-col space-y-6">
+      <div className="sticky text-center top-0 z-10">
         <Tools editor={editor} />
       </div>
-      <EditorContent className="border-2 flex-1 rounded-2xl" editor={editor} />
-
+      <ScrollArea className="h-full flex-1">
+        <EditorContent
+          className="border-2 h-full rounded-2xl"
+          editor={editor}
+        />
+      </ScrollArea>
       <div className="p-2 text-right">
         {editor && editor.storage.characterCount.characters()} characters
         <br />

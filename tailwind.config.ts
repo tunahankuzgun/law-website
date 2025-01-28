@@ -59,6 +59,111 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            //made all text white
+            color: "var(--textColor)",
+            a: {
+              color: "var(--primary)",
+              "&:hover": {
+                color: "var(--primary-foreground)",
+              },
+            },
+            "h1, h2, h3, h4": {
+              color: "var(--textColor)",
+            },
+            code: {
+              color: "var(--textColor)",
+              backgroundColor: "#ff0000",
+              padding: "0.2em 0.4em",
+              borderRadius: "0.25rem",
+            },
+            codeBlock: {
+              color: "var(--textColor)",
+              backgroundColor: "#ff0000",
+              padding: "1em",
+              borderRadius: "0.5rem",
+            },
+            pre: {
+              color: "var(--textColor)",
+              backgroundColor: "#ff0000",
+              padding: "1em",
+              borderRadius: "0.5rem",
+            },
+            "pre code": {
+              color: "var(--textColor)",
+              backgroundColor: "transparent",
+              padding: "0",
+            },
+            "ul > li::before": {
+              backgroundColor: "var(--primary)",
+            },
+            "ol > li::before": {
+              backgroundColor: "var(--primary)",
+            },
+            blockquote: {
+              borderLeftColor: "#ff0000",
+              color: "var(--textColor)",
+            },
+            hr: {
+              borderColor: "var(--border)",
+            },
+            "figure figcaption": {
+              color: "var(--textColor)",
+            },
+            "figure img": {
+              borderRadius: "0.5rem",
+              //make image responsive
+              width: "100%",
+              height: "auto",
+            },
+            table: {
+              color: "var(--textColor)",
+              borderCollapse: "collapse",
+              width: "100%",
+            },
+            "table th": {
+              backgroundColor: "var(--input)",
+              color: "var(--textColor)",
+              fontWeight: "700",
+            },
+            "table td": {
+              borderBottomColor: "var(--border)",
+            },
+            "table th, table td": {
+              padding: "0.75rem",
+              textAlign: "left",
+            },
+            "table tr:nth-child(2n)": {
+              backgroundColor: "var(--input)",
+            },
+            "thead th": {
+              backgroundColor: "var(--input)",
+              color: "var(--textColor)",
+            },
+            "code::before": {
+              content: "none",
+            },
+            "code::after": {
+              content: "none",
+            },
+            "a code": {
+              color: "var(--primary)",
+            },
+            "a code:hover": {
+              color: "var(--primary-foreground)",
+            },
+            strong: {
+              color: "var(--textColor)",
+              fontWeight: "700",
+            },
+            p: {
+              lineHeight: "1.2",
+            },
+          },
+        },
+      },
     },
   },
   plugins: [tailwindcssAnimate, typography],

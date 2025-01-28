@@ -21,7 +21,7 @@ interface ToolsProps {
   editor: Editor | null;
 }
 
-// Heading ekle 
+// Heading ekle
 // horizontal rule ekle
 // image ekle
 // link ekle
@@ -62,7 +62,7 @@ const tools = [
     icon: <FileCode2 size={20} />,
   },
   {
-    task: "quote",
+    task: "blockquote",
     icon: <Quote size={20} />,
   },
   {
@@ -93,7 +93,6 @@ const tools = [
 
 type TaskType = (typeof tools)[number]["task"];
 const Tools = ({ editor }: ToolsProps) => {
-
   const handleOnClick = (task: TaskType) => {
     switch (task) {
       case "bold":
@@ -109,7 +108,7 @@ const Tools = ({ editor }: ToolsProps) => {
       case "link":
         return;
       //  editor?.chain().focus().toggleLink({ href: "https://example.com" }).run();
-      case "quote":
+      case "blockquote":
         return editor?.chain().focus().toggleBlockquote().run();
       case "codeBlock":
         return editor?.chain().focus().toggleCodeBlock().run();
@@ -126,11 +125,17 @@ const Tools = ({ editor }: ToolsProps) => {
       default:
         return;
     }
-  }
+  };
   return (
-    <div className="space-x-4 ">
+    <div className="space-x-1">
       {tools.map(({ icon, task }) => (
-        <ToggleButton onClick={() => handleOnClick(task)} isPressed={editor?.isActive(task) || editor?.isActive({ textAlign: task })} key={task} >
+        <ToggleButton
+          onClick={() => handleOnClick(task)}
+          isPressed={
+            editor?.isActive(task) || editor?.isActive({ textAlign: task })
+          }
+          key={task}
+        >
           {icon}
         </ToggleButton>
       ))}

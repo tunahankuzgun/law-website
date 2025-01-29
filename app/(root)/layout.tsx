@@ -3,6 +3,7 @@ import { ThemeProvider } from "next-themes";
 import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 import "../globals.css";
+import Providers from "../providers";
 
 export default function RootLayout({
   children,
@@ -18,14 +19,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <div className="container min-h-screen">
-            <div className="wrapper">
-              <Navbar />
-              {children}
+          <Providers>
+            <div className="container min-h-screen">
+              <div className="wrapper">
+                <Navbar />
+                {children}
 
-              <Footer />
+                <Footer />
+              </div>
             </div>
-          </div>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

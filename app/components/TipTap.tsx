@@ -6,7 +6,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
-
+import Image from "@tiptap/extension-image";
 import Tools from "./Tools";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -17,6 +17,12 @@ const Tiptap = () => {
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     Placeholder.configure({ placeholder: "Type something..." }),
     CharacterCount,
+    Image.configure({
+      inline: true,
+      HTMLAttributes: {
+        class: "h-48 w-48",
+      },
+    }),
   ];
 
   const editor = useEditor({

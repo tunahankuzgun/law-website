@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -12,15 +14,24 @@ import { FileUploader } from "react-drag-drop-files";
 import GalleryImage from "./GalleryImage";
 import { uploadFile } from "@/actions/file";
 import ImageLoader from "./ImageLoader";
+import { useImages } from "@/context/ImageProvider";
 
-const ImageGallery = ({
-  open,
-  onOpenChange,
-}: {
+interface ImageGalleryProps {
   open: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
-}) => {
+  onSelect?(src: string): void;
+}
+
+const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
   const [uploading, setUploading] = useState(false);
+  const image = useImages();
+  const images = image?.images;
+  const updateImages = image?.updateImages;
+
+  const handleSelection = (image: string) => {
+    onSelect?.(image);
+    onOpenChange(false);
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,7 +50,9 @@ const ImageGallery = ({
                 const formData = new FormData();
                 formData.append("image", file);
                 const res = await uploadFile(formData);
-                console.log(res);
+                if (res && updateImages) {
+                  updateImages([res.secure_url]);
+                }
               } catch (error) {
                 console.error(error);
               }
@@ -81,12 +94,23 @@ const ImageGallery = ({
             </div>
           </FileUploader>
 
-          {/* <p className="text-4xl p-4 text-center font-semibold opacity-45">
-            No Images To Render
-          </p> */}
+          {!images?.length ? (
+            <p className="text-4xl p-4 text-center font-semibold opacity-45">
+              No Images To Render
+            </p>
+          ) : null}
 
           <div className="grid gap-4 md:grid-cols-4 grid-cols-2 mt-4">
             {uploading && <ImageLoader />}
+            {images?.map((item) => {
+              return (
+                <GalleryImage
+                  onSelectClick={() => handleSelection(item)}
+                  key={item}
+                  src={item}
+                />
+              );
+            })}
           </div>
         </div>
         <DialogFooter className="sticky bottom-0 mt-auto">

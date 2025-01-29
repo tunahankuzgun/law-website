@@ -97,6 +97,11 @@ type TaskType = (typeof tools)[number]["task"];
 const Tools = ({ editor }: ToolsProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
+  const onImageSelect = (image: string) => {
+    editor?.chain().focus().setImage({ src: image }).run();
+    setOpen(false);
+  };
+
   const handleOnClick = (task: TaskType) => {
     switch (task) {
       case "bold":
@@ -149,7 +154,11 @@ const Tools = ({ editor }: ToolsProps) => {
           </ToggleButton>
         ))}
       </div>
-      <ImageGallery open={open} onOpenChange={setOpen} />
+      <ImageGallery
+        onSelect={onImageSelect}
+        open={open}
+        onOpenChange={setOpen}
+      />
     </>
   );
 };

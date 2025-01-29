@@ -6,7 +6,6 @@ import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
-import BulletList from "@tiptap/extension-bullet-list";
 
 import Tools from "./Tools";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -18,7 +17,6 @@ const Tiptap = () => {
     TextAlign.configure({ types: ["heading", "paragraph"] }),
     Placeholder.configure({ placeholder: "Type something..." }),
     CharacterCount,
-    BulletList,
   ];
 
   const editor = useEditor({
@@ -34,22 +32,24 @@ const Tiptap = () => {
   });
 
   return (
-    <div className="h-screen w-full flex flex-col space-y-6">
-      <div className="sticky text-center top-0 z-10">
-        <Tools editor={editor} />
+    <>
+      <div className="h-screen w-full flex flex-col space-y-6">
+        <div className="sticky text-center top-0 z-10">
+          <Tools editor={editor} />
+        </div>
+        <ScrollArea className="h-full flex-1">
+          <EditorContent
+            className="border-2 h-full rounded-2xl"
+            editor={editor}
+          />
+        </ScrollArea>
+        <div className="p-2 text-right">
+          {editor && editor.storage.characterCount.characters()} characters
+          <br />
+          {editor && editor.storage.characterCount.words()} words
+        </div>
       </div>
-      <ScrollArea className="h-full flex-1">
-        <EditorContent
-          className="border-2 h-full rounded-2xl"
-          editor={editor}
-        />
-      </ScrollArea>
-      <div className="p-2 text-right">
-        {editor && editor.storage.characterCount.characters()} characters
-        <br />
-        {editor && editor.storage.characterCount.words()} words
-      </div>
-    </div>
+    </>
   );
 };
 

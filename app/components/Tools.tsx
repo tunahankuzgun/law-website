@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 import ToggleButton from "./ToggleButton";
 import { Editor } from "@tiptap/react";
+import { useState } from "react";
+import ImageGallery from "./ImageGallery";
 
 interface ToolsProps {
   editor: Editor | null;
@@ -93,6 +95,8 @@ const tools = [
 
 type TaskType = (typeof tools)[number]["task"];
 const Tools = ({ editor }: ToolsProps) => {
+  const [open, setOpen] = useState<boolean>(false);
+
   const handleOnClick = (task: TaskType) => {
     switch (task) {
       case "bold":
@@ -122,24 +126,31 @@ const Tools = ({ editor }: ToolsProps) => {
         return editor?.chain().focus().setTextAlign("center").run();
       case "right":
         return editor?.chain().focus().setTextAlign("right").run();
+      case "image":
+        setOpen(true);
+        return;
       default:
         return;
     }
   };
+
   return (
-    <div className="space-x-1">
-      {tools.map(({ icon, task }) => (
-        <ToggleButton
-          onClick={() => handleOnClick(task)}
-          isPressed={
-            editor?.isActive(task) || editor?.isActive({ textAlign: task })
-          }
-          key={task}
-        >
-          {icon}
-        </ToggleButton>
-      ))}
-    </div>
+    <>
+      <div className="space-x-1">
+        {tools.map(({ icon, task }) => (
+          <ToggleButton
+            onClick={() => handleOnClick(task)}
+            isPressed={
+              editor?.isActive(task) || editor?.isActive({ textAlign: task })
+            }
+            key={task}
+          >
+            {icon}
+          </ToggleButton>
+        ))}
+      </div>
+      <ImageGallery open={open} onOpenChange={setOpen} />
+    </>
   );
 };
 

@@ -7,10 +7,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import GalleryImage from "./GalleryImage";
 import { uploadFile } from "@/actions/file";
+import ImageLoader from "./ImageLoader";
 
 const ImageGallery = ({
   open,
@@ -19,6 +20,8 @@ const ImageGallery = ({
   open: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const [uploading, setUploading] = useState(false);
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex overflow-y-auto flex-col md:max-w-screen-md h-[80%] lg:max-w-screen-lg xl:max-w-screen-xl">
@@ -31,10 +34,16 @@ const ImageGallery = ({
         <div className="gap-4 py-4 ">
           <FileUploader
             handleChange={async (file: File) => {
-              const formData = new FormData();
-              formData.append("image", file);
-              const res = await uploadFile(formData);
-              console.log(res);
+              setUploading(true);
+              try {
+                const formData = new FormData();
+                formData.append("image", file);
+                const res = await uploadFile(formData);
+                console.log(res);
+              } catch (error) {
+                console.error(error);
+              }
+              setUploading(false);
             }}
             name="image"
             types={["png", "jpg", "jpeg"]}
@@ -72,16 +81,12 @@ const ImageGallery = ({
             </div>
           </FileUploader>
 
-          <p className="text-4xl p-4 text-center font-semibold opacity-45">
+          {/* <p className="text-4xl p-4 text-center font-semibold opacity-45">
             No Images To Render
-          </p>
+          </p> */}
 
-          <div className="grid gap-4 md:grid-cols-4 grid-cols-2">
-            <GalleryImage src="https://images.unsplash.com/photo-1735325332410-26cd3e9b9438?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <GalleryImage src="https://images.unsplash.com/photo-1735325332410-26cd3e9b9438?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <GalleryImage src="https://images.unsplash.com/photo-1735325332410-26cd3e9b9438?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <GalleryImage src="https://images.unsplash.com/photo-1735325332410-26cd3e9b9438?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
-            <GalleryImage src="https://images.unsplash.com/photo-1735325332410-26cd3e9b9438?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" />
+          <div className="grid gap-4 md:grid-cols-4 grid-cols-2 mt-4">
+            {uploading && <ImageLoader />}
           </div>
         </div>
         <DialogFooter className="sticky bottom-0 mt-auto">

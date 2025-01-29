@@ -1,5 +1,4 @@
 import { Toggle } from "@/components/ui/toggle";
-import React from "react";
 
 interface ToggleButtonProps {
   children: React.ReactNode;

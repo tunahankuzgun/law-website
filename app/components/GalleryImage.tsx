@@ -1,6 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
 import { Check, Trash2 } from "lucide-react";
-import React from "react";
 
 interface GalleryImageProps {
   src: string;

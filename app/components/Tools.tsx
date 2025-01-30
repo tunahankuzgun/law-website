@@ -7,7 +7,6 @@ import {
   FileCode2,
   ImagePlus,
   Italic,
-  Link,
   List,
   ListOrdered,
   Quote,
@@ -15,15 +14,24 @@ import {
   Underline,
 } from "lucide-react";
 import ToggleButton from "./ToggleButton";
-import { Editor } from "@tiptap/react";
+import { BubbleMenu, Editor } from "@tiptap/react";
 import { useState } from "react";
 import ImageGallery from "./ImageGallery";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import LinkButton from "./LinkButton";
+import LinkEdit from "./LinkEdit";
 
 interface ToolsProps {
   editor: Editor | null;
 }
 
-// Heading ekle
 // horizontal rule ekle
 // image ekle
 // link ekle
@@ -33,6 +41,37 @@ interface ToolsProps {
 // background color
 // table
 // undo redo
+
+const headingOptions = [
+  {
+    task: "p",
+    value: "Paragraph",
+  },
+  {
+    task: "h1",
+    value: "Heading 1",
+  },
+  {
+    task: "h2",
+    value: "Heading 2",
+  },
+  {
+    task: "h3",
+    value: "Heading 3",
+  },
+  {
+    task: "h4",
+    value: "Heading 4",
+  },
+  {
+    task: "h5",
+    value: "Heading 5",
+  },
+  {
+    task: "h6",
+    value: "Heading 6",
+  },
+] as const;
 
 const tools = [
   {
@@ -50,10 +89,6 @@ const tools = [
   {
     task: "strike",
     icon: <Strikethrough size={20} />,
-  },
-  {
-    task: "link",
-    icon: <Link size={20} />,
   },
   {
     task: "code",
@@ -91,9 +126,11 @@ const tools = [
     task: "image",
     icon: <ImagePlus size={20} />,
   },
-];
+] as const;
 
 type TaskType = (typeof tools)[number]["task"];
+type HeadingType = (typeof headingOptions)[number]["task"];
+
 const Tools = ({ editor }: ToolsProps) => {
   const [open, setOpen] = useState<boolean>(false);
 
@@ -114,9 +151,6 @@ const Tools = ({ editor }: ToolsProps) => {
         return editor?.chain().focus().toggleStrike().run();
       case "code":
         return editor?.chain().focus().toggleCode().run();
-      case "link":
-        return;
-      //  editor?.chain().focus().toggleLink({ href: "https://example.com" }).run();
       case "blockquote":
         return editor?.chain().focus().toggleBlockquote().run();
       case "codeBlock":
@@ -139,8 +173,118 @@ const Tools = ({ editor }: ToolsProps) => {
     }
   };
 
+  const handleHeadingSelection = (value: HeadingType) => {
+    switch (value) {
+      case "p":
+        return editor?.chain().focus().setParagraph().run();
+      case "h1":
+        return editor?.chain().focus().toggleHeading({ level: 1 }).run();
+      case "h2":
+        return editor?.chain().focus().toggleHeading({ level: 2 }).run();
+      case "h3":
+        return editor?.chain().focus().toggleHeading({ level: 3 }).run();
+      case "h4":
+        return editor?.chain().focus().toggleHeading({ level: 4 }).run();
+      case "h5":
+        return editor?.chain().focus().toggleHeading({ level: 5 }).run();
+      case "h6":
+        return editor?.chain().focus().toggleHeading({ level: 6 }).run();
+      default:
+        break;
+    }
+  };
+
+  const getSelectedHeading = () => {
+    let result: HeadingType = "p";
+
+    if (editor?.isActive("heading", { level: 1 })) {
+      result = "h1";
+    }
+    if (editor?.isActive("heading", { level: 2 })) {
+      result = "h2";
+    }
+    if (editor?.isActive("heading", { level: 3 })) {
+      result = "h3";
+    }
+    if (editor?.isActive("heading", { level: 4 })) {
+      result = "h4";
+    }
+    if (editor?.isActive("heading", { level: 5 })) {
+      result = "h5";
+    }
+    if (editor?.isActive("heading", { level: 6 })) {
+      result = "h6";
+    }
+
+    return result;
+  };
+
+  const handleLinkSubmission = (link: string) => {
+    if (link === null) {
+      return;
+    }
+
+    if (link === "") {
+      editor?.chain().focus().extendMarkRange("link").unsetLink().run();
+
+      return;
+    }
+
+    try {
+      editor
+        ?.chain()
+        .focus()
+        .extendMarkRange("link")
+        .setLink({ href: link })
+        .run();
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const getInitialLink = () => {
+    const attributes = editor?.getAttributes("link");
+    if (attributes) return attributes.href;
+  };
+
   return (
-    <>
+    <div className="space-x-1 flex items-center justify-center">
+      <Select
+        value={getSelectedHeading()}
+        onValueChange={(value) => handleHeadingSelection(value as HeadingType)}
+      >
+        <SelectTrigger className="w-[120px]">
+          <SelectValue placeholder="Select type" defaultValue="apple" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectGroup>
+            {headingOptions.map(({ task, value }) => (
+              <SelectItem className="cursor-pointer" key={task} value={task}>
+                {value}
+              </SelectItem>
+            ))}
+          </SelectGroup>
+        </SelectContent>
+      </Select>
+      <LinkButton
+        isActive={
+          editor?.isActive("link") || editor?.isActive("link/underline")
+        }
+        onSubmit={handleLinkSubmission}
+      />
+
+      <BubbleMenu
+        editor={editor}
+        shouldShow={({ editor }) => editor?.isActive("link")}
+      >
+        <div className="">
+          <LinkEdit
+            initialLink={getInitialLink()}
+            onSubmit={handleLinkSubmission}
+          />
+        </div>
+      </BubbleMenu>
+
       <div className="space-x-1">
         {tools.map(({ icon, task }) => (
           <ToggleButton
@@ -159,7 +303,7 @@ const Tools = ({ editor }: ToolsProps) => {
         open={open}
         onOpenChange={setOpen}
       />
-    </>
+    </div>
   );
 };
 

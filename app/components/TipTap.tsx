@@ -7,6 +7,7 @@ import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
 import Placeholder from "@tiptap/extension-placeholder";
 import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
 import Tools from "./Tools";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -23,6 +24,13 @@ const Tiptap = () => {
         class: "h-48 w-48",
       },
     }),
+    Link.configure({
+      autolink: false,
+      openOnClick: true,
+      HTMLAttributes: {
+        target: "_blank",
+      },
+    }),
   ];
 
   const editor = useEditor({
@@ -30,7 +38,7 @@ const Tiptap = () => {
     editorProps: {
       attributes: {
         class:
-          "prose prose-sm lg:prose-lg 2xl:prose-2xl m-10 w-full focus:outline-none",
+          "prose prose-sm md:prose-md lg:prose-lg xl:prose-xl 2xl:prose-2xl m-10 max-w-7xl focus:outline-none",
       },
     },
     immediatelyRender: false,
@@ -39,13 +47,13 @@ const Tiptap = () => {
 
   return (
     <>
-      <div className="h-screen w-full flex flex-col space-y-6">
-        <div className="sticky text-center top-0 z-10">
+      <div className="h-screen w-full flex flex-col  space-y-6">
+        <div className="sticky bg-background text-center top-0 pt-2 z-10">
           <Tools editor={editor} />
         </div>
         <ScrollArea className="h-full flex-1">
           <EditorContent
-            className="border-2 h-full rounded-2xl"
+            className="border-2 h-full w-full rounded-2xl"
             editor={editor}
           />
         </ScrollArea>

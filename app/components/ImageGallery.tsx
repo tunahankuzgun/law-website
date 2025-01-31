@@ -12,7 +12,7 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import GalleryImage from "./GalleryImage";
-import { uploadFile } from "@/actions/file";
+import { removeImage, uploadFile } from "@/actions/file";
 import ImageLoader from "./ImageLoader";
 import { useImages } from "@/context/ImageProvider";
 
@@ -24,9 +24,12 @@ interface ImageGalleryProps {
 
 const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
   const [uploading, setUploading] = useState(false);
+  const [removing, setRemoving] = useState(false);
+  const [removedItem, setRemovedItem] = useState("");
   const image = useImages();
   const images = image?.images;
   const updateImages = image?.updateImages;
+  const removeOldImage = image?.removeOldImage;
 
   const handleSelection = (image: string) => {
     onSelect?.(image);
@@ -105,7 +108,28 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
             {images?.map((item) => {
               return (
                 <GalleryImage
+                  removedItem={removedItem}
+                  loading={removing}
                   onSelectClick={() => handleSelection(item)}
+                  onDeleteClick={async () => {
+                    if (
+                      confirm("Are you sure you want to delete this image?")
+                    ) {
+                      setRemoving(true);
+                      setRemovedItem(item);
+                      const id = item
+                        .split("/")
+                        .slice(-2)
+                        .join("/")
+                        .split(".")[0];
+                      await removeImage(id);
+                      if (removeOldImage) {
+                        removeOldImage(item);
+                      }
+                      setRemovedItem("");
+                      setRemoving(false);
+                    }
+                  }}
                   key={item}
                   src={item}
                 />

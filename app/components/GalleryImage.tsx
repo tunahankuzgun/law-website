@@ -1,19 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
 import { Check, Trash2 } from "lucide-react";
+import ImageLoader from "./ImageLoader";
 
 interface GalleryImageProps {
   src: string;
+  removedItem?: string;
+  loading?: boolean;
   onDeleteClick?: () => void;
   onSelectClick?: () => void;
   alt?: string;
 }
 
 const GalleryImage = ({
+  loading,
+  removedItem,
   src,
   onDeleteClick,
   onSelectClick,
   alt,
 }: GalleryImageProps) => {
+  if (loading && src === removedItem) {
+    return <ImageLoader />;
+  }
+
   return (
     <div className=" relative w-full aspect-square overflow-hidden rounded">
       <img className="w-full h-full object-cover" src={src} alt={alt} />

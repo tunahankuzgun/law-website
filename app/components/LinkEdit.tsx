@@ -12,7 +12,7 @@ interface LinkEditProps {
 
 const LinkEdit = ({ initialLink, onSubmit }: LinkEditProps) => {
   const [link, setLink] = useState("");
-  console.log(initialLink);
+
   useEffect(() => {
     if (initialLink) setLink(initialLink);
   }, [initialLink]);

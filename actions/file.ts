@@ -13,7 +13,7 @@ export const uploadFile = async (
   data: FormData
 ): Promise<UploadApiResponse | undefined> => {
   const file = data.get("image");
-  console.log(file);
+
   if (file instanceof File && file.type.startsWith("image/")) {
     const buffer = Buffer.from(await file.arrayBuffer());
     return new Promise((resolve, reject) => {
@@ -39,6 +39,14 @@ export const readAllImages = async () => {
     })) as { resources: UploadApiResponse[] };
 
     return resources.map(({ secure_url }) => secure_url);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const removeImage = async (publicId: string) => {
+  try {
+    await cloud.uploader.destroy(publicId);
   } catch (error) {
     console.error(error);
   }

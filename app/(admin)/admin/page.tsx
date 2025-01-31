@@ -1,27 +1,24 @@
-import CreateUser from "@/app/components/CreateUser";
 import { ModeToggle } from "@/app/components/ModeToggle";
-import SignOut from "@/app/components/SignOut";
 import { LoginForm } from "@/components/ui/login-form";
 import { auth } from "@/lib/auth";
 
 const Admin = async () => {
   const session = await auth();
 
-  if (!session) {
-    console.log("No session");
-  }
+  if (!session)
+    return (
+      <main className="w-full mx-auto p-4">
+        <div className="flex flex-col items-center justify-center h-screen bg-background">
+          <ModeToggle />
+          <h1 className="mb-10 text-4xl">Hello Guest</h1>
+          <LoginForm />
+        </div>
+      </main>
+    );
 
   return (
-    <main className="relative">
-      {session && <SignOut />}
-      <div className="flex flex-col items-center justify-center h-screen bg-background">
-        <ModeToggle />
-        {session && <CreateUser />}
-        <h1 className="mb-10 text-4xl">
-          Hello {session ? session?.user?.email?.split("@")[0] : "Guest"}
-        </h1>
-        {!session && <LoginForm />}
-      </div>
+    <main className="flex w-full mx-auto">
+      <div className="flex flex-col items-center justify-center h-screen bg-background"></div>
     </main>
   );
 };

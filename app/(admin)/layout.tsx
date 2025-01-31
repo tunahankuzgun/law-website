@@ -1,5 +1,7 @@
 import { ThemeProvider } from "next-themes";
 import "../globals.css";
+import Providers from "../providers";
+import AdminNavbar from "../components/AdminNavbar";
 
 export default function AdminLayout({
   children,
@@ -15,7 +17,14 @@ export default function AdminLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <Providers>
+            <div className="container min-h-screen">
+              <div className="wrapper w-full">
+                <AdminNavbar />
+                {children}
+              </div>
+            </div>
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

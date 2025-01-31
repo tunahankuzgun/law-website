@@ -1,6 +1,7 @@
 import { auth } from "@/lib/auth";
 import { ModeToggle } from "./ModeToggle";
 import SignOut from "./SignOut";
+import Link from "next/link";
 
 const AdminNavbar = async () => {
   const session = await auth();
@@ -13,10 +14,15 @@ const AdminNavbar = async () => {
       </div>
       <div className="flex items-center gap-4 flex-1 lg:text-lg lg:gap-5 text-base justify-end">
         <ModeToggle />
-        <div className={"hidden sm:block"}>
-          Hello, {session?.user?.email?.split("@")[0]}
-        </div>
-        <SignOut />
+        {session && (
+          <>
+            <div className={"hidden sm:block"}>
+              Hello, {session?.user?.email?.split("@")[0]}
+            </div>
+            <Link href="/admin/create-blog">Create Blog</Link>
+            <SignOut />
+          </>
+        )}
       </div>
     </header>
   );

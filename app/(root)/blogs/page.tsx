@@ -1,13 +1,5 @@
 import BlogList from "@/app/components/BlogList";
 import { BlogLoader } from "@/app/components/BlogLoader";
-import CreateForm from "@/app/components/CreateForm";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Suspense } from "react";
 export default async function Blogs() {
   return (
@@ -21,15 +13,6 @@ export default async function Blogs() {
       <Suspense fallback={<BlogLoader />}>
         <BlogList />
       </Suspense>
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">Add Blog</CardTitle>
-          <CardDescription>Add a new blog to the list.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <CreateForm />
-        </CardContent>
-      </Card>
     </main>
   );
 }

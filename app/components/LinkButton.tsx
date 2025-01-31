@@ -18,7 +18,6 @@ interface LinkButtonProps {
 
 const LinkButton = ({ onSubmit, isActive }: LinkButtonProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const [link, setLink] = useState("");
 
   const handleClick = () => {

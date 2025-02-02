@@ -11,7 +11,6 @@ const executeAction = async <T>({
 }: Options<T>): Promise<{ success: boolean; message: string }> => {
   try {
     await actionFn();
-
     return {
       success: true,
       message: successMessage,

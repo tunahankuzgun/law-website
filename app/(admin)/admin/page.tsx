@@ -1,6 +1,5 @@
 import { LoginForm } from "@/components/ui/login-form";
 import { auth } from "@/lib/auth";
-
 const Admin = async () => {
   const session = await auth();
 

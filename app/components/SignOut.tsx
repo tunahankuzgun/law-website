@@ -2,7 +2,7 @@
 
 import { signOutAction } from "@/actions/actions";
 import { Button } from "@/components/ui/button";
-import { LogOut, Loader2 } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { useState } from "react";
 import { LogoutOverlay } from "./LogoutOverlay";
 
@@ -17,20 +17,11 @@ const SignOut = () => {
 
   return (
     <>
-      <LogoutOverlay isLoggingOut={isLoggingOut} />
+      <LogoutOverlay loadingText="Logging out..." isLoading={isLoggingOut} />
 
-      <Button className="" onClick={handleLogout} disabled={isLoggingOut}>
-        {isLoggingOut ? (
-          <>
-            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            Logging out...
-          </>
-        ) : (
-          <>
-            <LogOut className="mr-2 h-4 w-4" />
-            Logout
-          </>
-        )}
+      <Button disabled={isLoggingOut} className="" onClick={handleLogout}>
+        <LogOut className="mr-2 h-4 w-4" />
+        Logout
       </Button>
     </>
   );

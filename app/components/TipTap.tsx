@@ -14,8 +14,9 @@ import Tools from "./Tools";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { createBlog } from "@/actions/actions";
-
+import { useToast } from "@/hooks/use-toast";
 const Tiptap = () => {
+  const { toast } = useToast();
   const [title, setTitle] = useState("");
 
   const extensions = [
@@ -59,10 +60,18 @@ const Tiptap = () => {
         content: editor.getHTML(),
       }))
     ) {
-      console.log("Blog created successfully");
-      // form.reset();
+      toast({
+        title: "Blog created successfully",
+        description: "Your blog has been created successfully",
+      });
+      setTitle("");
+      editor.commands.setContent("");
     } else {
-      console.error("Failed to create blog");
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
     }
   };
 

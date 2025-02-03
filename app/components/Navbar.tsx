@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggle";
-//import { usePathname } from "next/navigation";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 const Navbar = () => {
   const navLinks = [
@@ -23,9 +23,13 @@ const Navbar = () => {
       name: "Blogs",
       path: "/blogs",
     },
+    {
+      name: "Contact",
+      path: "/contact",
+    },
   ];
 
-  //const pathname = usePathname();
+  const pathname = usePathname();
 
   return (
     <header className="flex items-center justify-between h-[100px]">
@@ -41,10 +45,19 @@ const Navbar = () => {
       <div className="flex items-center gap-4 flex-1 lg:text-lg lg:gap-5 text-base justify-end">
         <ModeToggle />
         {navLinks.map((link) => (
-          <Link key={link.path} className={"hidden sm:block"} href={link.path}>
+          <Link
+            key={link.path}
+            className={`hidden sm:block ${
+              pathname === link.path
+                ? "bg-primary p-2 rounded-md text-background"
+                : ""
+            }`}
+            href={link.path}
+          >
             {link.name}
           </Link>
         ))}
+        <div className="sm:hidden">H</div>
       </div>
     </header>
   );

@@ -2,6 +2,7 @@ import { ThemeProvider } from "next-themes";
 import "../globals.css";
 import Providers from "../providers";
 import AdminNavbar from "../components/AdminNavbar";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function AdminLayout({
   children,
@@ -22,6 +23,7 @@ export default function AdminLayout({
               <div className="wrapper w-full">
                 <AdminNavbar />
                 {children}
+                <Toaster />
               </div>
             </div>
           </Providers>

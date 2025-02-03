@@ -107,6 +107,7 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
             {images?.map((item) => {
               return (
                 <GalleryImage
+                  key={item}
                   removedItem={removedItem}
                   loading={removing}
                   onSelectClick={() => handleSelection(item)}
@@ -129,7 +130,6 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
                       setRemoving(false);
                     }
                   }}
-                  key={item}
                   src={item}
                 />
               );

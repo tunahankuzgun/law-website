@@ -76,7 +76,7 @@ export default function GetInTouchMenu() {
         <CardHeader>
           <CardTitle>Get in Touch</CardTitle>
           <CardDescription>
-            Choose how you'd like to connect with us
+            Choose how you&apos;d like to connect with us
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -107,7 +107,7 @@ export default function GetInTouchMenu() {
         <CardHeader>
           <CardTitle>Contact Us</CardTitle>
           <CardDescription>
-            Fill out the form below and we'll get back to you
+            Fill out the form below and we&apos;ll get back to you
           </CardDescription>
         </CardHeader>
         <CardContent>

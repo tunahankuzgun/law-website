@@ -1,5 +1,5 @@
 "use client";
-import { readAllImages } from "@/actions/file";
+import { readBlogImages, readCoverImages } from "@/actions/file";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface ImageProviderProps {
@@ -7,30 +7,64 @@ interface ImageProviderProps {
 }
 
 interface InitialImageContext {
-  images: string[];
-  updateImages(images: string[]): void;
-  removeOldImage(src: string): void;
+  blogImages: string[];
+  coverImages: string[];
+  updateBlogImages: (images: string[]) => void;
+  updateCoverImages: (images: string[]) => void;
+  removeOldBlogImage: (src: string) => void;
+  removeOldCoverImage: (src: string) => void;
 }
 
 const Context = createContext<InitialImageContext | null>(null);
 
 const ImageProvider = ({ children }: ImageProviderProps) => {
-  const [images, setImages] = useState<string[]>([]);
+  const [blogImages, setBlogImages] = useState<string[]>([]);
+  const [coverImages, setCoverImages] = useState<string[]>([]);
 
-  const updateImages = (data: string[]) => {
-    setImages([...data, ...images]);
+  const updateBlogImages = (data: string[]) => {
+    setBlogImages((prevImages) => [...prevImages, ...data]);
   };
 
-  const removeOldImage = (src: string) => {
-    setImages(images.filter((image) => image !== src));
+  const updateCoverImages = (data: string[]) => {
+    setCoverImages((prevImages) => [...prevImages, ...data]);
+  };
+
+  const removeOldBlogImage = (src: string) => {
+    setBlogImages((prevImages) => prevImages.filter((image) => image !== src));
+  };
+
+  const removeOldCoverImage = (src: string) => {
+    setCoverImages((prevImages) => prevImages.filter((image) => image !== src));
   };
 
   useEffect(() => {
-    readAllImages().then((data) => setImages(data || []));
+    const fetchImages = async () => {
+      try {
+        const [fetchedBlogImages, fetchedCoverImages] = await Promise.all([
+          readBlogImages(),
+          readCoverImages(),
+        ]);
+        setBlogImages(fetchedBlogImages || []);
+        setCoverImages(fetchedCoverImages || []);
+      } catch (error) {
+        console.error("Error fetching images:", error);
+      }
+    };
+
+    fetchImages();
   }, []);
 
   return (
-    <Context.Provider value={{ images, updateImages, removeOldImage }}>
+    <Context.Provider
+      value={{
+        blogImages,
+        coverImages,
+        updateBlogImages,
+        updateCoverImages,
+        removeOldBlogImage,
+        removeOldCoverImage,
+      }}
+    >
       {children}
     </Context.Provider>
   );

@@ -12,7 +12,7 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import GalleryImage from "./GalleryImage";
-import { removeImage, uploadFile } from "@/actions/file";
+import { removeImage, uploadBlogImages } from "@/actions/file";
 import ImageLoader from "./ImageLoader";
 import { useImages } from "@/context/ImageProvider";
 
@@ -27,9 +27,9 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
   const [removing, setRemoving] = useState(false);
   const [removedItem, setRemovedItem] = useState("");
   const image = useImages();
-  const images = image?.images;
-  const updateImages = image?.updateImages;
-  const removeOldImage = image?.removeOldImage;
+  const blogImages = image?.blogImages;
+  const updateBlogImages = image?.updateBlogImages;
+  const removeOldBlogImage = image?.removeOldBlogImage;
 
   const handleSelection = (image: string) => {
     onSelect?.(image);
@@ -52,9 +52,9 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
               try {
                 const formData = new FormData();
                 formData.append("image", file);
-                const res = await uploadFile(formData);
-                if (res && updateImages) {
-                  updateImages([res.secure_url]);
+                const res = await uploadBlogImages(formData);
+                if (res && updateBlogImages) {
+                  updateBlogImages([res.secure_url]);
                 }
               } catch (error) {
                 console.error(error);
@@ -96,15 +96,14 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
             </div>
           </FileUploader>
 
-          {!images?.length ? (
+          {!blogImages?.length ? (
             <p className="text-4xl p-4 text-center font-semibold opacity-45">
               No Images To Render
             </p>
           ) : null}
 
           <div className="grid gap-4 md:grid-cols-4 grid-cols-2 mt-4">
-            {uploading && <ImageLoader />}
-            {images?.map((item) => {
+            {blogImages?.map((item) => {
               return (
                 <GalleryImage
                   key={item}
@@ -123,8 +122,8 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
                         .join("/")
                         .split(".")[0];
                       await removeImage(id);
-                      if (removeOldImage) {
-                        removeOldImage(item);
+                      if (removeOldBlogImage) {
+                        removeOldBlogImage(item);
                       }
                       setRemovedItem("");
                       setRemoving(false);
@@ -134,6 +133,7 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
                 />
               );
             })}
+            {uploading && <ImageLoader />}
           </div>
         </div>
         <DialogFooter className="sticky bottom-0 mt-auto">

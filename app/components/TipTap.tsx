@@ -15,9 +15,13 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useState } from "react";
 import { createBlog } from "@/actions/actions";
 import { useToast } from "@/hooks/use-toast";
+import { BlogPinToggle } from "./BlogPinToggle";
+import { BlogVisibilityToggle } from "./BlogVisibilityToggle";
 const Tiptap = () => {
   const { toast } = useToast();
   const [title, setTitle] = useState("");
+  const [pinned, setPinned] = useState(false);
+  const [visible, setVisible] = useState(false);
 
   const extensions = [
     StarterKit,
@@ -73,9 +77,9 @@ const Tiptap = () => {
         "\ndescription:  ",
         "",
         "\npinned:  ",
-        false,
+        pinned,
         "\npublished:  ",
-        false
+        visible
       )
     ) {
       toast({
@@ -95,32 +99,43 @@ const Tiptap = () => {
 
   return (
     <>
-      <div className="h-screen w-full flex flex-col space-y-6">
-        <div className="sticky bg-background text-center top-0 pt-2 z-10">
-          <Tools editor={editor} />
-        </div>
-        <form className="w-full">
-          <Input
-            onChange={({ target }) => setTitle(target.value)}
-            name="title"
-            placeholder="Enter your title"
-          />
-
-          <ScrollArea className="h-full flex-1">
-            <EditorContent
-              className="border-2 h-full w-full rounded-2xl"
-              editor={editor}
-            />
-            <div className="p-2 text-right">
-              {editor && editor.storage.characterCount.characters()} characters
-              <br />
-              {editor && editor.storage.characterCount.words()} words
+      <div>
+        <div className="h-screen w-full flex flex-col space-y-6">
+          <div className="sticky bg-background text-center top-0 pt-2 z-10">
+            <div className="flex justify-end space-x-2">
+              <BlogPinToggle onToggle={(isPinned) => setPinned(isPinned)} />
+              <BlogVisibilityToggle
+                onToggle={(isVisible) => setVisible(isVisible)}
+              />
             </div>
-          </ScrollArea>
-        </form>
-        <Button onClick={handleCreateForm} className="w-full text-end">
-          Create Blog
-        </Button>
+            <Tools editor={editor} />
+          </div>
+          <form className="w-full">
+            <Input
+              className="
+              sm:w-[65%] h-14 mb-10 border-2 rounded-lg w-full outline-none"
+              onChange={({ target }) => setTitle(target.value)}
+              name="title"
+              placeholder="Enter your title"
+            />
+
+            <ScrollArea className=" flex-1">
+              <EditorContent
+                className="border-2 h-full w-full rounded-2xl"
+                editor={editor}
+              />
+              <div className="p-2 text-right">
+                {editor && editor.storage.characterCount.characters()}{" "}
+                characters
+                <br />
+                {editor && editor.storage.characterCount.words()} words
+              </div>
+            </ScrollArea>
+          </form>
+          <Button onClick={handleCreateForm} className="w-full text-end">
+            Create Blog
+          </Button>
+        </div>
       </div>
     </>
   );

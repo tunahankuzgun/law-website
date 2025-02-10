@@ -14,7 +14,16 @@ export async function createBlog(formData: z.infer<typeof formSchema>) {
     const blog = await prisma.blog.create({
       data: {
         title: formData.title as string,
-        slug: (formData.title as string).replace(/\s/g, "-").toLowerCase(),
+        slug: (formData.title as string)
+          .toLowerCase()
+          .replace(/[^a-z0-9 -]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-")
+          .replace(/^-+|-+$/g, ""),
+        image: formData.image as string,
+        description: formData.description as string,
+        pinned: formData.pinned as boolean,
+        published: formData.published as boolean,
         content: formData.content as string,
       },
     });

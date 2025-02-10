@@ -248,7 +248,7 @@ const Tools = ({ editor }: ToolsProps) => {
   };
 
   return (
-    <div className="space-x-1 flex items-center justify-center">
+    <div className="space-x-1 flex flex-col sm:flex-row items-center justify-center">
       <Select
         value={getSelectedHeading()}
         onValueChange={(value) => handleHeadingSelection(value as HeadingType)}

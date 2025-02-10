@@ -14,4 +14,8 @@ export const formSchema = z.object({
     message: "Title must be at least 2 characters.",
   }),
   content: z.string(),
+  image: z.string(),
+  description: z.string(),
+  pinned: z.boolean(),
+  published: z.boolean(),
 });

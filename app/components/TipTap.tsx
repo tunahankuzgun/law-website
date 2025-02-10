@@ -28,7 +28,7 @@ const Tiptap = () => {
     Image.configure({
       inline: true,
       HTMLAttributes: {
-        class: "h-48 w-48",
+        // class: "h-48 w-48",
       },
     }),
     Link.configure({
@@ -55,10 +55,28 @@ const Tiptap = () => {
   const handleCreateForm = async () => {
     if (
       editor &&
-      (await createBlog({
-        title: title,
-        content: editor.getHTML(),
-      }))
+      // (await createBlog({
+      // title: title,
+      // content: editor.getHTML(),
+      // image: "asd",
+      // description: "",
+      // pinned: false,
+      // published: false,
+      // }))
+      console.log(
+        "title:  ",
+        title,
+        " \ncontent:  ",
+        editor.getHTML(),
+        "\nimage:  ",
+        "asd",
+        "\ndescription:  ",
+        "",
+        "\npinned:  ",
+        false,
+        "\npublished:  ",
+        false
+      )
     ) {
       toast({
         title: "Blog created successfully",

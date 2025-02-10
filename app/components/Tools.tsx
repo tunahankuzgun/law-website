@@ -16,7 +16,7 @@ import {
 import ToggleButton from "./ToggleButton";
 import { BubbleMenu, Editor } from "@tiptap/react";
 import { useState } from "react";
-import ImageGallery from "./ImageGallery";
+import BlogImageGallery from "./BlogImageGallery";
 import {
   Select,
   SelectContent,
@@ -298,7 +298,7 @@ const Tools = ({ editor }: ToolsProps) => {
           </ToggleButton>
         ))}
       </div>
-      <ImageGallery
+      <BlogImageGallery
         onSelect={onImageSelect}
         open={open}
         onOpenChange={setOpen}

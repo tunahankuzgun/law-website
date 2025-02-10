@@ -17,11 +17,22 @@ import { createBlog } from "@/actions/actions";
 import { useToast } from "@/hooks/use-toast";
 import { BlogPinToggle } from "./BlogPinToggle";
 import { BlogVisibilityToggle } from "./BlogVisibilityToggle";
+import CoverImageGallery from "./CoverImageGallery";
+import { Check, Upload } from "lucide-react";
+
 const Tiptap = () => {
   const { toast } = useToast();
-  const [title, setTitle] = useState("");
-  const [pinned, setPinned] = useState(false);
-  const [visible, setVisible] = useState(false);
+  const [title, setTitle] = useState<string>("");
+  const [pinned, setPinned] = useState<boolean>(false);
+  const [visible, setVisible] = useState<boolean>(false);
+  const [description, setDescription] = useState<string>("");
+  const [imageSrc, setImageSrc] = useState<string>("");
+  const [imageDialog, setImageDialog] = useState<boolean>(false);
+
+  const onCoverImageSelect = (image: string) => {
+    setImageSrc(image);
+    setImageDialog(false);
+  };
 
   const extensions = [
     StarterKit,
@@ -59,28 +70,14 @@ const Tiptap = () => {
   const handleCreateForm = async () => {
     if (
       editor &&
-      // (await createBlog({
-      // title: title,
-      // content: editor.getHTML(),
-      // image: "asd",
-      // description: "",
-      // pinned: false,
-      // published: false,
-      // }))
-      console.log(
-        "title:  ",
-        title,
-        " \ncontent:  ",
-        editor.getHTML(),
-        "\nimage:  ",
-        "asd",
-        "\ndescription:  ",
-        "",
-        "\npinned:  ",
-        pinned,
-        "\npublished:  ",
-        visible
-      )
+      (await createBlog({
+        title: title,
+        content: editor.getHTML(),
+        image: imageSrc,
+        description: description,
+        pinned: pinned,
+        published: visible,
+      }))
     ) {
       toast({
         title: "Blog created successfully",
@@ -111,15 +108,41 @@ const Tiptap = () => {
             <Tools editor={editor} />
           </div>
           <form className="w-full">
+            <div className="w-full flex justify-between">
+              <Input
+                className="sm:w-[65%] h-14 border-2 rounded-lg w-full outline-none"
+                onChange={({ target }) => setTitle(target.value)}
+                name="title"
+                placeholder="Enter your title"
+              />
+              <div>
+                <div
+                  onClick={() => setImageDialog(true)}
+                  className="flex items-center space-x-2"
+                >
+                  {imageSrc !== "" ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <Upload className="w-4 h-4" />
+                  )}
+                  <span>
+                    {imageSrc !== "" ? "Image Selected" : "Upload Image"}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <CoverImageGallery
+              open={imageDialog}
+              onOpenChange={setImageDialog}
+              onSelect={onCoverImageSelect}
+            />
             <Input
-              className="
-              sm:w-[65%] h-14 mb-10 border-2 rounded-lg w-full outline-none"
-              onChange={({ target }) => setTitle(target.value)}
-              name="title"
-              placeholder="Enter your title"
+              placeholder="Enter your short description for the blog to be displayed on the blog card"
+              className="border-2 w-full mt-10"
+              onChange={({ target }) => setDescription(target.value)}
             />
 
-            <ScrollArea className=" flex-1">
+            <ScrollArea className="mt-10 flex-1">
               <EditorContent
                 className="border-2 h-full w-full rounded-2xl"
                 editor={editor}

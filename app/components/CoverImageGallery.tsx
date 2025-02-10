@@ -12,24 +12,29 @@ import {
 import { Dispatch, SetStateAction, useState } from "react";
 import { FileUploader } from "react-drag-drop-files";
 import GalleryImage from "./GalleryImage";
-import { removeImage, uploadBlogImages } from "@/actions/file";
+import { removeImage, uploadCoverImage } from "@/actions/file";
 import ImageLoader from "./ImageLoader";
 import { useImages } from "@/context/ImageProvider";
 
-interface ImageGalleryProps {
+interface CoverImageGalleryProps {
   open: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
   onSelect?(src: string): void;
 }
 
-const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
+const CoverImageGallery = ({
+  open,
+  onOpenChange,
+  onSelect,
+}: CoverImageGalleryProps) => {
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
   const [removedItem, setRemovedItem] = useState("");
+
   const image = useImages();
-  const blogImages = image?.blogImages;
-  const updateBlogImages = image?.updateBlogImages;
-  const removeOldBlogImage = image?.removeOldBlogImage;
+  const coverImages = image?.coverImages;
+  const updateCoverImages = image?.updateCoverImages;
+  const removeOldCoverImage = image?.removeOldCoverImage;
 
   const handleSelection = (image: string) => {
     onSelect?.(image);
@@ -40,9 +45,9 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="flex overflow-y-auto flex-col md:max-w-screen-md h-[80%] lg:max-w-screen-lg xl:max-w-screen-xl">
         <DialogHeader>
-          <DialogTitle>Add Images</DialogTitle>
+          <DialogTitle>Select Cover Image</DialogTitle>
           <DialogDescription>
-            You can add images to your profile here.
+            You can add and select cover image for your blog here.
           </DialogDescription>
         </DialogHeader>
         <div className="gap-4 py-4 ">
@@ -52,9 +57,9 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
               try {
                 const formData = new FormData();
                 formData.append("image", file);
-                const res = await uploadBlogImages(formData);
-                if (res && updateBlogImages) {
-                  updateBlogImages([res.secure_url]);
+                const res = await uploadCoverImage(formData);
+                if (res && updateCoverImages) {
+                  updateCoverImages([res.secure_url]);
                 }
               } catch (error) {
                 console.error(error);
@@ -96,14 +101,14 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
             </div>
           </FileUploader>
 
-          {!blogImages?.length ? (
+          {!coverImages?.length ? (
             <p className="text-4xl p-4 text-center font-semibold opacity-45">
               No Images To Render
             </p>
           ) : null}
 
           <div className="grid gap-4 md:grid-cols-4 grid-cols-2 mt-4">
-            {blogImages?.map((item) => {
+            {coverImages?.map((item) => {
               return (
                 <GalleryImage
                   key={item}
@@ -122,8 +127,8 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
                         .join("/")
                         .split(".")[0];
                       await removeImage(id);
-                      if (removeOldBlogImage) {
-                        removeOldBlogImage(item);
+                      if (removeOldCoverImage) {
+                        removeOldCoverImage(item);
                       }
                       setRemovedItem("");
                       setRemoving(false);
@@ -144,4 +149,4 @@ const ImageGallery = ({ open, onOpenChange, onSelect }: ImageGalleryProps) => {
   );
 };
 
-export default ImageGallery;
+export default CoverImageGallery;
